@@ -35,6 +35,7 @@ jobs:
           # ref. https://github.com/orgs/community/discussions/26560#discussioncomment-3252340
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          gh auth setup-git
       - name: "Create a branch"
         env:
           CHART_VERSION: ${{ inputs.chart-version }}
