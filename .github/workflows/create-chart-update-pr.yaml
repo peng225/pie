@@ -17,6 +17,9 @@ jobs:
   create-chart-update-pr:
     runs-on: "ubuntu-latest"
     timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: "Validate input"
         env:
