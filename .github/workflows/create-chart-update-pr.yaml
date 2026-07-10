@@ -36,6 +36,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           gh auth setup-git
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Create a branch"
         env:
           CHART_VERSION: ${{ inputs.chart-version }}
@@ -47,7 +49,7 @@ jobs:
         id: image
         env:
           APP_VERSION: ${{ inputs.app-version }}
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           digest=$(gh api --paginate "/orgs/topolvm/packages/container/pie/versions" \
             --jq "[.[] | select(.metadata.container.tags[]? == \"$APP_VERSION\") | .name] | first")
@@ -68,7 +70,7 @@ jobs:
           sed -r -i "s|^(  reference:).*|\1 $APP_VERSION@$IMAGE_DIGEST|" charts/pie/values.yaml
       - name: "Create pull request"
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CHART_VERSION: ${{ inputs.chart-version }}
         run: |
           git commit -a -s -m "Bump chart version to $CHART_VERSION"
